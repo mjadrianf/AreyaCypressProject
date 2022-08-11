@@ -9,8 +9,20 @@
 // ***********************************************
 //
 //
-// -- This is a parent command --
-// Cypress.Commands.add('login', (email, password) => { ... })
+// -- This is a parent command and pass to the new page--
+Cypress.Commands.add('login', (username, password) => { 
+    cy.session([username, password], () => {
+        cy.visit("https://test.salesforce.com/")
+            cy.get('#username').type(username)
+            cy.get('#password').type(password)
+            cy.get('#rememberUn').click()
+            cy.get('#Login').click()
+            cy.origin("	https://homeland--preprod.my.salesforce.com/one/one.app", () => {
+                cy.contains("Investor Dibs Bucket").should("be.visible")
+             })
+     })
+
+ })
 //
 //
 // -- This is a child command --
