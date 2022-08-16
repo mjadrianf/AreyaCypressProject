@@ -11,17 +11,21 @@
 //
 // -- This is a parent command and pass to the new page--
 Cypress.Commands.add('login', (username, password) => { 
-    cy.session([username, password], () => {
-        cy.visit("https://test.salesforce.com/")
-            cy.get('#username').type(username)
+    const args = { username, password }
+    cy.session(
+      args,
+      () => {
+          cy.visit('https://test.salesforce.com/')
+          cy.get('#username').type(username)
             cy.get('#password').type(password)
-            cy.get('#rememberUn').click()
             cy.get('#Login').click()
-            cy.origin("	https://homeland--preprod.my.salesforce.com/one/one.app", () => {
-                cy.contains("Investor Dibs Bucket").should("be.visible")
-             })
+            cy.wait(2000)
+            cy.origin('https://homeland--preprod.lightning.force.com/lightning/setup/Roles/home',() => {
+                cy.wait(3000)
+            cy.contains('href="javascript:roleTreeNode.expandAllRoles()').click()
+        })
+        cy.title("AA").should("be.visible")
      })
-
  })
 //
 //
